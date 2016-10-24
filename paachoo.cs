@@ -8,7 +8,6 @@ using System.Text.RegularExpressions; //正则表达式的命名空间
 
 namespace test
 {
-    public delegate void testWeiTuo(string name);
     public delegate void GetWebData();
     class Program
     {
@@ -30,58 +29,30 @@ namespace test
 
         static void Main(string[] args)
         {
-            #region List数组
-            List<int> arr = new List<int>();
-            for(var i = 0;i < 10; i++)
-            {
-                arr.Add(i);
-                //Console.WriteLine();
-            }
-            #endregion
-            #region 委托
-            testWeiTuo wt = new testWeiTuo(intrr);
-            wt += intss;  
-            wt("AA");
-            openInt("Aa", intrr);
-            #endregion
-            #region Event CallBack
-            AsyncFunction o = new AsyncFunction();
-            //o.Fun();
-            #endregion
-            #region Timer
-            Timer Timmer;
-            //Timmer = new Timer();
-
-            #endregion
-
             #region 网页抓取
             GetWebData getWebData = getPageCon;
-            getWebData.BeginInvoke(null ,null); //异步执行网页读取
-            LoadingAnimate();
+            getWebData.BeginInvoke(null, null); //异步执行网页读取
+            LoadingAnimate(); //loading 动画
             if (pageData.Count > 0)
             {
-                //Console.WriteLine(pageData[0]);
+                
             }
             else
             {
                 Console.WriteLine("没有读取到数据");
             }
             WebContent.Credentials = CredentialCache.DefaultCredentials;
-            
-            //Byte[] pageData = WebContent.DownloadData("https://movie.douban.com/top250"); //从指定网站下载数据
-            //string pageHtml = Encoding.Default.GetString(pageData);  //如果获取网站页面采用的是GB2312，则使用这句            
-            //string pageHtml = Encoding.UTF8.GetString(pageData); //如果获取网站页面采用的是UTF-8，则使用这句
-            //Console.WriteLine(pageHtml);//在控制台输入获取的内容
-            //string[] getLink = GetLinks(pageHtml);//使用正则表达式获取页面链接
 
-            //foreach (string Link in getLink)
-            //{
-            //    Console.WriteLine(Link);
-            //}
             #endregion
-            Console.ReadKey();
         }
         #region 方法
+        /// <summary>
+        /// 获取单个页面的所有链接
+        /// </summary>
+        static void linkDataForAllPage()
+        {
+
+        }
         /// <summary>
         /// 获取所有页面链接,读取所有页面内容存放到pageData中
         /// </summary>
@@ -142,77 +113,6 @@ namespace test
             }
         }
         #endregion
-        
 
-        private static void openInt(string name,testWeiTuo makeOpen)
-        {
-            makeOpen(name);
-        }
-        private static void intrr(string id)
-        {
-           // Console.WriteLine("Rr" + id);
-        }
-        private static void intss(string id)
-        {
-            //Console.WriteLine("Ss" + id);
-        }
-
-        public static void CheckOpen()
-        {
-            Console.WriteLine("Sleep Start...");
-            Thread.Sleep(2000);
-            Console.WriteLine("Sleep End....");
-        }
-       
-    }
-    class AsyncFunction
-    {
-        public event Action CallBack;
-        private void Function_1()
-        {
-            for (var i = 0; i < 10; i++)
-            {
-                Thread.Sleep(500);
-                Console.WriteLine("Funciton_1:{0}", i);
-            }
-        }
-        private void Function_2()
-        {
-            for (var i = 0; i < 10; i++)
-            {
-                Thread.Sleep(500);
-                Console.WriteLine("Function_2:{0}", i);
-            }
-        }
-        public void Fun()
-        {
-            CallBack += AsyncFunction_CallBack;
-            if (CallBack != null)
-            {
-                CallBack();
-            }
-        }
-
-        void AsyncFunction_CallBack()
-        {
-            
-            Function_1();
-            Function_2();
-        }
-    }
-    class demoNum
-    {
-        private int demoNumP = 1;
-        public int Num
-        {
-            set 
-            {
-                demoNumP = value + demoNumP;
-            }
-            get
-            {
-                return demoNumP;
-            }
-        }
     }
 }
