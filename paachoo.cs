@@ -17,6 +17,10 @@ namespace test
         /// </summary>
         public static List<string> pageData = new List<string>();
         /// <summary>
+        /// 储存标题
+        /// </summary>
+        public static List<string> titleData = new List<string>();
+        /// <summary>
         /// 初始化WebClient实例
         /// </summary>
         public static WebClient WebContent = new WebClient();
@@ -24,7 +28,6 @@ namespace test
         /// Loading标志位
         /// </summary>
         static bool _loading = true;
-        public static event Action CallBack;
         #endregion
 
         static void Main(string[] args)
@@ -33,19 +36,32 @@ namespace test
             GetWebData getWebData = getPageCon;
             getWebData.BeginInvoke(null, null); //异步执行网页读取
             LoadingAnimate(); //loading 动画
-            if (pageData.Count > 0)
-            {
-                
-            }
-            else
-            {
-                Console.WriteLine("没有读取到数据");
-            }
-            WebContent.Credentials = CredentialCache.DefaultCredentials;
-
+            HanderData(pageData);
             #endregion
         }
         #region 方法
+        /// <summary>
+        /// 处理页面数据
+        /// </summary>
+        /// <param name="list">pageData</param>
+        private static void HanderData(List<string> list) 
+        {
+            string regex = "<span class=\"title\">.+</span>";
+            for (int i = 0; i < list.Count;i++)
+            {
+                System.Text.RegularExpressions.MatchCollection matchCol = System.Text.RegularExpressions.Regex.Matches(list[i], regex);
+                if (matchCol.Count > 0)
+                {
+                    for (int iz = 0; iz < matchCol.Count; iz++)
+                    {
+                        string val = Convert.ToString(matchCol[iz]);
+                        titleData.Add(val);
+                        Console.WriteLine(val);
+                    }
+                }
+            }
+            Console.ReadKey();
+        } 
         /// <summary>
         /// 获取单个页面的所有链接
         /// </summary>
@@ -101,7 +117,7 @@ namespace test
                 string[] lo = new string[] { "-", "\\", "|", "/" };
                 for (int i = 0; i < 4; i++)
                 {
-                    Console.WriteLine("Loading...{0}", lo[i]);
+                    Console.WriteLine("loading...{0}", lo[i]);
                     Thread.Sleep(500);
                     Console.Clear();
                 }
