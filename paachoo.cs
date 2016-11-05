@@ -63,13 +63,6 @@ namespace test
             Console.ReadKey();
         } 
         /// <summary>
-        /// 获取单个页面的所有链接
-        /// </summary>
-        static void linkDataForAllPage()
-        {
-
-        }
-        /// <summary>
         /// 获取所有页面链接,读取所有页面内容存放到pageData中
         /// </summary>
         private static void getPageCon()
@@ -128,7 +121,24 @@ namespace test
                 }
             }
         }
-        #endregion
+        /// <summary>
+        /// 获取网页中的链接
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        private static string[] GetLinks(string html)
+        {
+            const string pattern = @"https://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?";
+            Regex r = new Regex(pattern, RegexOptions.IgnoreCase); //新建正则模式
+            MatchCollection m = r.Matches(html); //获得匹配结果
+            string[] links = new string[m.Count];
 
+            for (int i = 0; i < m.Count; i++)
+            {
+                links[i] = m[i].ToString(); //提取出结果
+            }
+            return links;
+        }
+        #endregion
     }
 }
